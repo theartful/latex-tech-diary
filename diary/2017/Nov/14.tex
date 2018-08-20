@@ -1,0 +1,54 @@
+\begin{entry}[2]{The Matrix approach for Linear Algebra}
+
+\begin{entrysection}
+I have been exposed to linear algebra in two different ways this year: the first being more abstract in terms of linear maps using Axler's book, and the second is through matrices using Gilbert's book. In this post I will write about some differences I noted between the two approaches according to the way I studied them, which is in the first case through self-study and through college in the second.
+\end{entrysection}
+
+\begin{entrysection}[All finite vector spaces are the same]
+It's quite easy to prove that all finite-dimensional vector spaces of the same dimension are isomorphic. To see that let $v_1,\ldots,v_n$ be a basis of a vector space $V$ and let $w_1,\ldots,w_n$ be a basis of a vector space $W$. Then the linear map
+\[ T \in  \mathcal{L}(V, W) \text{ such that } Tv_j = w_j, \]
+for all $j = 1,\ldots,n$ is an isomorphism. This means that any n-dimensional vector space is isomoprhic to $\mathbb{F}^n$. Hence we can essentially study finite-dimensional vector spaces and the linear maps between them by studying Euclidean spaces $\mathbb{F}^n$. This seems to be the approach LA is taught in my college.
+\end{entrysection}
+
+\begin{entrysection}[All bases are orthonormal, all inner products are euclidean]
+I noticed that the way our professor defined inner products was rather specific. She defined it as
+\[ \inp{\mathrm{x},\mathrm{y}} = \mathrm{x}^{*}\mathrm{y},\quad \text{where $\mathrm{x}^{*}$ is the conjugate transpose;}\]
+and then we got to prove the real axioms of inner products, which are:
+\begin{center}
+\begin{tabular}{ccc}
+Definitiveness:& $\inp{v,v} = 0 \iff v = 0$\\[5pt]
+Positivity:& $\inp{v,v} \geq 0$\\[5pt] 
+Linearity in one argument:& $\inp{v+w,u} = \inp{v,u} + \inp{w,u}$, \; $\inp{\lambda v,u} = \lambda\inp{v,u}$\\[5pt]
+Conjugate symmetry:& $\inp{v,u} = \overline{\inp{u,v}}$.
+\end{tabular} 
+\end{center}
+The first definition is specific because, at first glance, it assumes that the only inner product is the Euclidean inner product. But it actually only assumes that the chosen basis is orthonormal. Why? Because this implies that
+\[ \inp{\begin{bmatrix}1 \\ 0\end{bmatrix}, \begin{bmatrix}0 \\ 1\end{bmatrix}} = 0, \]
+in the case of 2d space. The example can be generalized for any dimension. But what about other inner products? Essentially all inner products on finite-dimensional vector spaces can be thought as euclidean. To see this suppose that $e_1,\ldots,e_n$ is an orthonormal basis of a finite-dimensional vector space $V$, and let $v, w\in V$. Then
+\begin{align*}
+\inp{v,w} &= \inp{\inp{v,e_1}e_1 + \ldots + \inp{v,e_n}e_n, \inp{w,e_1}e_1 + \ldots + \inp{w,e_n}e_n}\\
+&= \inp{v,e_1}\overline{\inp{w,e_1}} + \ldots + \inp{v,e_n} \overline{\inp{w,e_n}},
+\end{align*}
+which is the same as
+\[ \inp{v, u} = \mathrm{v}^{*}\mathrm{w}  \]
+when we use an orthonormal basis. So, in a sense, the matrix definition of inner products is more pithy. Hence when we model our problem in terms of matrices, it's a good idea to choose an orthonormal basis with respect to the inner product we work with, so as to exploit the power of matrices. The problem is that this doesn't work in infinite-dimensional vector spaces, but they don't seem to come up in engineering often anyways. Another problem is that this doesn't give much insight. Axler seems to strongly believe this! 
+\end{entrysection}
+
+\begin{entrysection}[Injectivity is linear independence, surjectivity is the spanning property]
+Let $T$ be a linear map from $V$ to $W$, and let $v_1,\ldots,v_n$ be a basis of $V$. If $Tv_1,\ldots,Tv_n$ is linearly independent, then $T$ is injective. And if $Tv_1,\ldots,Tv_n$ span $W$, then $T$ is surjective. This fact seems to be much pronounced when we're looking from a matrix point of view. Let's consider a system of linear equations consisting of $n$ variables and $m$ equations:
+\begin{align*}
+a_{1,1}x_1 + a_{1,2}x_2 + \ldots + a_{1,n}x_n &= c_1\\
+\vdots\\
+a_{m,1}x_1 + a_{m,2}x_2 + \ldots + a{m,n}x_n &= c_m.
+\end{align*}
+What axler did was to transform this into a linear map from $\mathbb{F}^n$ to $\mathbb{F}^m$ as follows
+\[ T(x_1,\ldots,x_n) = (a_{1,1}x_1 + \ldots + a_{1,n}x_n,\ldots,a_{m,1}x_1 + \ldots + a_{m,n}x_n).  \]
+So if $n < m$ then $T$ can't be surjective and thus we can't guarantee the existence of a solution, and if $n > m$ then $T$ can't be injective and thus there always exists an infinite number of solutions if $(c_1,\ldots,c_m) \in \text{range }T$. Then later on he presented the notion of the rank of a matrix which helped a little. Gilbert however gave more intuitive way to look at this. So he said let's reformulate this as follows:
+\[ x_1 \begin{bmatrix}a_{1,1}\\\vdots\\a_{m,1}\end{bmatrix} + \ldots + x_n\begin{bmatrix}a_{1,n}\\\vdots\\a_{m,n}\end{bmatrix} = \begin{bmatrix}c_1\\\vdots\\c_m\end{bmatrix}. \]
+It becomes clear that if the vectors of coefficients are linearly independent, then there exists at most one solution, and if they span $\mathbb F^m$ then there exists at least one solution. The rank is then defined as the dimension of the span of the column vectors of a matrix, and it gives even more insight. To show this, let 
+\[  A = \begin{pmatrix} a_{1,1} & \ldots & a_{1,n} \\ \vdots & \ddots & \vdots \\ a_{m,1} & \ldots & a_{m,n} \end{pmatrix}, \quad A|c =  \begin{amatrix}{3} a_{1,1} & \ldots & a_{1,n} & c_1\\ \vdots & \ddots & \vdots & \vdots \\ a_{m,1} & \ldots & a_{m,n} & c_m \end{amatrix}.\]
+Then if $\text{rank }A = \text{rank }A|c$, then it must mean that $[c_1,\ldots,c_m]^T$ is expressible using the vectors of coefficients, as otherwise it should contribute to the dimension. And if $\text{rank }A < \text{rank }A|c$, then there are no solutions as it must mean that $[c_1\ldots,c_m]^T$ is not in the span of the vectors of coefficients. I think this point of view is more intuitive than speaking from a high point of abstraction as Axler did.
+\end{entrysection}
+
+\end{entry}
+
