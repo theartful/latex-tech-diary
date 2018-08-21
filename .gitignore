@@ -1,2 +1,5 @@
 pdfs/
 build/
+**/*.aux
+**/*.log
+**/*.pdf

@@ -1,0 +1,24 @@
+\begin{entry}[2]{PCA - Part 1: Isometries }
+
+\begin{entrysection}
+In the next few entries I will write about Principal Component Analysis (PCA) and Singular Value Decomposition (SVD).
+\end{entrysection}
+
+\begin{entrysection}[Isometries (a.k.a Unitary operators)]
+Let's start with a definition of what is an isometry on a real finite dimensional space $V$. An operator $S \in \L(V)$ is called an isometry if 
+\[ \norm{Sv} = \norm{v} \]
+for all $v \in V$. In other words, an operator is an isometry if it preserves norms (Axler). One can easily prove that this is equivalent to:
+\[ SS^{\intercal} = S^{\intercal}S = I. \]
+So what does this mean? The first equation implies that if such a transformation is applied to a rigid body, it won't be distorted or deformed, as it will keep its relative distances the same. This means that rotations are isometries for example.\\
+
+\noindent Isometries are commonly used to change the basis of a vector to a new orthonormal basis. For example, let's say we are in $\R^n$, and we want to change the basis to another orthonormal basis, say 
+$f_1, \ldots, f_n.$
+Thus, the behaviour of our matrix, let's name it $M$, should be such that:
+\[ M(v) =  \begin{bmatrix}\inp{v, f_1}\\\inp{v, f_2}\\\vdots\\\inp{v, f_n} \end{bmatrix}.\]
+From the definition of matrix multiplication, it can be easily seen that a matrix whose rows are the new basis will do the trick:
+\[ M(v) = \begin{bmatrix} f_1^\intercal\\ f_2^\intercal\\\vdots\\ f_n^\intercal \end{bmatrix}v = \begin{bmatrix}f_1^\intercal v\\f_2^\intercal v\\\vdots\\f_n^\intercal v \end{bmatrix} = 
+\begin{bmatrix}\inp{v, f_1}\\\inp{v, f_2}\\\vdots\\\inp{v, f_n} \end{bmatrix}.\] 
+In fact, for any basis of any subspace $U$ of $V$, a matrix whose rows are the basis of that subspace defines a projection matrix from $V$ unto $U$. But in the case in which $U = V$ and the basis of $U$ is orthonormal, that matrix is an isometry. What's cool about isometries though is that we can easily revert back to the original basis by applying the transpose of the matrix $M^{\intercal}$, as $M^{\intercal} = M^{-1}$.
+\end{entrysection}
+
+\end{entry}
