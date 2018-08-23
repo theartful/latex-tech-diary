@@ -1,0 +1,80 @@
+\begin{entry}[3]{PCA - Part 2: Singular Value Decomposition}
+
+\begin{entrysection}[Normal Operators]
+An operator $T \in \L(V)$ on an inner product space is called normal if it commutes with its adjoint. In other words
+\[ T T^{\top} = T^{\top} T \]
+What makes normal operators interesting is that the Spectral Theorem applies on them.
+\end{entrysection}
+
+\begin{entrysection}[Slef-Adjoint Operators]
+An operator $T \in \L(V)$ on an inner product space is called self-adjoint if it's equal to its adjoint $T = T^{\top}$. This means that
+\[ \inp{Tv, w} = \inp{v, Tw}, \]
+for all $v, w \in V$.
+Self-adjoint operators are normal since $TT^{\top} = T^{\top}T = T^2$.
+\end{entrysection}
+
+\begin{entrysection}[The Complex Spectral Theorem for Normal Operators]
+An operator $T \in \L(V)$, where $V$ is a complex finite-dimensional vector space, is normal if and only if $V$ has an orthonormal basis consisting of eigenvectors of $T$. Or in other words, if $T$ can be unitarily diagonalizable. This means that there exists a unitary matrix $U$ and a diagonal $\Sigma$ such that
+\[ T = U\Sigma U^{*} \]
+The diagonal entries of $\Sigma$ are the eignevalues of $T$, and the columns of the matrix $U$ are the corresponding eigenvectors.\\
+
+\noindent This theorem is not true for real vector spaces (hence the adjective complex!). But it's true for the more specific case of self-adjoint matrices. We have Cauchy to thank for that result!
+\end{entrysection}
+
+\begin{entrysection}[The Spectral Theorem for Self-Adjoint Operators (a.k.a. Hermitian Matrices)]
+An operator $T \in \L(V)$ is self-adjoint if and only if $V$ has an orthonormal basis consisting of eigenvectors of $T$. Note that the vector space $V$ can be real.
+\end{entrysection}
+
+\begin{entrysection}[Singular Value Decomposition]
+\noindent Let $T \in \L(V, W)$ where $\text{dim } V = m$ and $\text{dim } W = n$, that is to say that the matrix of $T$ is of dimension $n \times m$. Let $r = \text{rank } T$. We want to find an orthonormal list \[e_1, \ldots, e_r\] of $V$ (where $e_i \not\in \text{null }T$ for all $i \leq r$) that is mapped by $T$ to an orthogonal basis \[\sigma_1 f_1, \ldots, \sigma_r f_r\] of $\text{range }T \subset W$, where $\sigma_i \in \R$ and $f_i$ is normalized for all appropriate $i$. That is to say that for any $v \in V$ we have
+\begin{align*} 
+  Tv &= \inp{v, e_1} Te_1 + \ldots + \inp{v, e_r} Te_r \\
+  &= \sigma_1 \inp{v, e_1} f_1 + \ldots + \sigma_r \inp{v, e_r} f_r.
+\end{align*} 
+Let's make some unmotivated assignments:
+\begin{itemize}
+\item Let $e_1, \ldots, e_r$ be the set of orthonormal eigenvectors of the symmetric matrix $T^{\top}T$ that is associated with the eigenvalues $\lambda_1,\ldots,\lambda_r$.
+\item Let $\sigma_i \equiv \sqrt{\lambda_i}$ for all $i = 1, \ldots, r$. We will call these the singular values of $T$.
+\item Let $f_i = \frac{1}{\sigma_i} Te_i$ for all $i = 1, \ldots, r$.
+\end{itemize}
+We will prove that $f_1,\ldots,f_r$ is an orthonormal list. Note that
+\begin{align*}
+\norm{f_i}^2 &= \inp{f_i, f_i}\\
+&= \inp{\frac{1}{\sigma_i} Te_i, \frac{1}{\sigma_i} Te_i}\\
+&= \frac{1}{\sigma_i^2} e_i^{\top} T^{\top} T e_i.\\
+\intertext{And since $e_i$ is an eigenvector of $T^{\top}T$ we get}
+&=  \frac{1}{\lambda_i} e_i^{\top} \lambda_i e_i = e_i^{\top} e_i = 1.
+\end{align*}
+Thus $\norm{f_i} = 1$. Now suppose that $i \neq j$. Then
+\begin{align*}
+\inp{f_i, f_j} &= \inp{\frac{1}{\sigma_i} Te_i, \frac{1}{\sigma_j} Te_j}\\
+&= \frac{1}{\sigma_i \sigma_j} e_i^{\top} T^{\top} T j_i.\\
+&= \frac{\lambda_j}{\sigma_i \sigma_j} e_i^{\top} e_j = 0.
+\end{align*}
+Therefore $f_1, \ldots, f_r$ is an orthonormal list. \\
+
+\noindent We've  found all what we want so far; an orthonormal list $e_1,\ldots,e_r$ that is mapped to an orthogonal list $\sigma_1f_1,\ldots,\sigma_1f_r$. What's left is to decompose our matrix using this information. We now know that
+\begin{align*}
+Te_1 &= \sigma_1 f_1\\
+&\vdots\\
+Te_r &= \sigma_r f_r
+\end{align*}
+Which can be compactly written as
+\[ T\begin{bmatrix}e_1 & \ldots & e_r\end{bmatrix} = \begin{bmatrix}f_1 & \ldots & f_r\end{bmatrix}
+\begin{bmatrix}
+  \sigma_1 & & 0\\
+  & \ddots &\\
+  0 & & \sigma_r
+\end{bmatrix}. \]
+And since $\begin{bmatrix}e_1 & \ldots & e_r\end{bmatrix}$ is a semi-unitary matrix, then
+\[ \begin{bmatrix}e_1 & \ldots & e_r\end{bmatrix} \begin{bmatrix} e_1^{\top} \\ \vdots \\ e_r^{\top} \end{bmatrix} = I_m.\]
+We can show this result using a similar argument to the one in the isometries entry. Finally we get our matrix decomposition
+\[ T = \begin{bmatrix}f_1 & \ldots & f_r\end{bmatrix}
+  \begin{bmatrix}
+    \sigma_1 & & 0\\
+    & \ddots &\\
+    0 & & \sigma_r
+  \end{bmatrix} \begin{bmatrix} e_1^{\top} \\ \vdots \\ e_r^{\top} \end{bmatrix}, \]
+\end{entrysection}
+which is more succinctly written as $T = U\Sigma V^{\top}$.
+\end{entry}

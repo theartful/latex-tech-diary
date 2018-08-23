@@ -4,7 +4,7 @@
 In the next few entries I will write about Principal Component Analysis (PCA) and Singular Value Decomposition (SVD).
 \end{entrysection}
 
-\begin{entrysection}[Isometries (a.k.a Unitary operators)]
+\begin{entrysection}[Isometries (a.k.a. Unitary operators)]
 Let's start with a definition of what is an isometry on a real finite dimensional space $V$. An operator $S \in \L(V)$ is called an isometry if 
 \[ \norm{Sv} = \norm{v} \]
 for all $v \in V$. In other words, an operator is an isometry if it preserves norms (Axler). One can prove that this is equivalent to:
@@ -24,7 +24,7 @@ Which can be clearly seen as taking the projection unto the new basis:
 From the definition of matrix multiplication, it becomes evident that a matrix whose rows are the new basis will do the trick:
 \[  M^{\intercal}(v) = \begin{bmatrix} f_1^\intercal\\ f_2^\intercal\\\vdots\\ f_n^\intercal \end{bmatrix}v = \begin{bmatrix}f_1^\intercal v\\f_2^\intercal v\\\vdots\\f_n^\intercal v \end{bmatrix} = 
 \begin{bmatrix}\inp{v, f_1}\\\inp{v, f_2}\\\vdots\\\inp{v, f_n} \end{bmatrix} = M^{-1}(v).\] 
-Which means that $M$ is an isometry.
+Which means that $M$ is an isometry. In fact, any square matrix whose columns or rows are orthonormal vectors is an isometry, that can be seen as a change of basis.
 \end{entrysection}
 
 \end{entry}
