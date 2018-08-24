@@ -1,0 +1,91 @@
+\pagebreak
+\begin{entry}[4]{PCA - Part 3: PCA}
+
+\begin{entrysection}[Design Matrix]
+Let's say we're conducting an experiment and we're collecting observations. Further assume that for each observation we are measuring $n$ features. We can represent each obervation as a vector $x \in \R^n$ where each entry represents a different feature. So, after finishing the experiment, we will end up with feature vectors $x_1,\ldots,x_m \in \R^n$. The design matrix $X \in \R^{m \times n}$ is then defined to be
+\[ X = \begin{bmatrix}x_1^{\top} \\ \vdots \\ x_m^{\top} \end{bmatrix} ,\]
+where each row is a feature vector.
+\end{entrysection}
+
+\begin{entrysection}[Covariance Matrix]
+We can view our feature vectors as \textit{i.i.d.} random variables in $\R^n$ drawn from some arbitrary probability distribution. Covariance is then defined to be the expected value of the outer product of the mean-normalized random variable
+\[ cov(x) = E[ (x - E[x])(x - E[x])^{\top} ]. \]
+Since we don't know the distribution from which the random variable is drawn, we have to use estimations. In this case, the sample covariance is an unbiased estimator which is defined as follows
+\[ C_x = \frac{1}{m - 1} \sum_{i = 1}^{m}(x_i - \overline{x})(x_i - \overline{x})^{\top}, \]
+such that $\overline{x}$ is the mean 
+\[\overline{x} = \frac{1}{m} \sum_{i = 1}^{m} x_i.\]
+Let $X$ be our design matrix but after performing mean normalization, so that
+\[ X = \begin{bmatrix} (x_1 - \overline{x})^{\top} \\ \vdots \\ (x_m - \overline{x})^{\top}. \end{bmatrix}. \]
+Then we can write the sample covariance as
+\[ C_x = \frac{1}{m - 1} X^{\top} X. \]
+The covariance matrix has some nice properties:
+\begin{itemize}
+    \item It's square symmetric of size $n \times n$ such that the off-diagonal entries $C_x(i, j)$ represents the covariance between the $i^{\text{th}}$ feature and the $j^{\text{th}}$ feature.
+    \item The diagonal entries are the variances of the features.
+\end{itemize}
+\end{entrysection}
+
+\begin{entrysection}[Correlated Features and Redundancy]
+    We want our data to have little to no redundancy as possible, so that in the ideal case the features be independent. We don't gain much information if we measure features $x, y, z$ and it turns out that $z$ is a function of $x$ and $y$ for example. However, it's quite hard to design an experiment where that's the case. The objective of PCA is to find a new set of linearly uncorrelated features from the original features. Sadly, that's not the ideal case we wanted, since the features might be linearly uncorrelated but still be dependent, but at least it's a step in the right direction. \\
+    
+    \noindent Another problem might be that we measure a lot of features. It would be nice if we also reduced the number of these features by discarding the least important ones. Our criteria for importance is the variance, since features with very small variances give us little information, and are more prone to noise. 
+\end{entrysection}
+
+\begin{entrysection} [Objectives]
+So let's formulate our objectives:
+\begin{enumerate}
+    \item Find a new set of uncorrelated features a.k.a principal components.
+    \item Reduce the dimension of the input by discarding features with low variances.
+\end{enumerate}
+The first objective is equivalent to finding a change of basis matrix $P$ so that the covariance matrix becomes diagonal. Remember that we said that the off-diagonal entries are the covariance between two different features, and covariances measure the linear correlation. Hence we want those to be zero. \\
+
+\noindent The second objective is equivalent to ordering the features by variances, and only keeping the first $r$ features with the highest variance, where $r$ is chosen based on the problem.
+\end{entrysection}
+
+\begin{entrysection} [Derivation using Eigendecomposition]
+We need to find a change of basis unitary matrix $P$ to apply on our data points $x_1, \ldots, x_m$, so that they become $y_1,\ldots,y_m$ where
+\[ y_i = Px_i, \]
+and the covariance matrix $C_y$ becomes diagonal. Let $Y$ be the design matrix of the transformed data points. Then
+\[ Y = XP^{\top}, \]
+as can be easily checked. And thus we have
+\begin{align*}
+C_y &= (XP^{\top})^{\top} (XP^{\top}) \\
+&= PX^{\top}XP^{\top} \\
+&= PC_xP^{\top},
+\end{align*}
+Remember that $C_x$ is symmetric (self-adjoint), and thus, by the spectral theorem, $C_x$ is diagonalized by a unitary matrix $U$ consisting of its eigenvectors so that $C_x = Q \Lambda Q^{\top}$ where $\Lambda$ is a diagonal matrix consisting of the corresponding eigenvalues. Hence
+\begin{align*}
+C_y &= PQ\Lambda Q^{\top}P^{\top},
+\end{align*}
+and by letting $P = Q^{\top}$ we get
+\begin{align*}
+    C_y &= Q^{\top}Q \Lambda Q^{\top}Q \\
+    &= \Lambda,
+\end{align*}
+where the second equality comes because $Q^{-1} = Q^{\top}$. Thus by choosing $P = Q^{\top}$ we managed to diagonalize the covariance matrix.
+\end{entrysection}
+
+\begin{entrysection} [Derivation using SVD]
+We've shown in the previous entry that any matrix can be decomposed as such
+\[ X = U \Sigma V^{\top}, \]
+where $U$ and $V$ are unitary matrices, and $\Sigma$ is a diagonal matrix. In fact this $V$ and the $Q$ from the previous section are the same, since they both consist of the eigenvectors of $X^{\top}X$. But let's be sure anyways! Let $P = V^{\top}$. Then 
+\begin{align*}
+    Y &= XP^{\top} \\
+    &= U \Sigma V^{\top} V\\
+    &= U \Sigma.
+\end{align*}
+Therefore
+\begin{align*}
+    C_y &= Y^{\top}Y \\ 
+    &= (U \Sigma)^{\top}(U \Sigma)\\
+    &= \Sigma^{\top} U^{\top} U \Sigma \\
+    &= \Sigma^2.
+\end{align*}
+Note that $\Lambda = \Sigma^2$, which makes sense, because $\Sigma$ consists of the square roots of the eigenvalues of $X^{\top}X$.
+\end{entrysection}
+
+\begin{entrysection}
+For better exposition read "A Tutorial on Principal Component Analysis" by Jonathon Shlens.
+\end{entrysection}
+
+\end{entry}
