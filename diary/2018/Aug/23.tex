@@ -1,5 +1,5 @@
 \pagebreak
-\begin{entry}[4]{PCA - Part 3: PCA}
+\begin{entry}[4]{PCA - Part 3: PCA Statistical Approach}
 
 \begin{entrysection}[Design Matrix]
 Let's say we're conducting an experiment and we're collecting observations. Further assume that for each observation we are measuring $n$ features. We can represent each obervation as a vector $x \in \R^n$ where each entry represents a different feature. So, after finishing the experiment, we will end up with feature vectors $x_1,\ldots,x_m \in \R^n$. The design matrix $X \in \R^{m \times n}$ is then defined to be
@@ -34,7 +34,7 @@ The covariance matrix has some nice properties:
 \begin{entrysection} [Objectives]
 So let's formulate our objectives:
 \begin{enumerate}
-    \item Find a new set of uncorrelated features a.k.a principal components.
+    \item Find a new set of uncorrelated features a.k.a. principal components.
     \item Reduce the dimension of the input by discarding features with low variances.
 \end{enumerate}
 The first objective is equivalent to finding a change of basis matrix $P$ so that the covariance matrix becomes diagonal. Remember that we said that the off-diagonal entries are the covariance between two different features, and covariances measure the linear correlation. Hence we want those to be zero. \\

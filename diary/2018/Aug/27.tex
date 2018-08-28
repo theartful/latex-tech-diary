@@ -1,0 +1,78 @@
+\begin{entry}[1]{PCA - Part 4: PCA Optimization Approach}
+
+\begin{entrysection} [The Trace]
+The trace of a square matrix is defined to be the sum of its diagonal entries, and it's equal to the sum of its eigenvalues.
+\end{entrysection}
+
+\begin{entrysection} [Basic Properties of the Trace]
+Here is a list of the basic properties of the trace that we will need:
+\begin{enumerate}
+\item The trace is a linear map
+\[ Tr(A + B) = Tr(A) + Tr(B).\]
+\item The trace of a matrix is equal to the trace of the matrix transposed. 
+\[Tr(A) = Tr(A^{\top}).\]
+\item The trace is invariant under cyclic permutations
+\[ Tr(ABC) = Tr(CAB) = Tr(BCA). \]
+\end{enumerate}
+\end{entrysection}
+
+\begin{entrysection} [The Frobenius Norm]
+The Frobenius norm $\norm{.}_F$ of a matrix $A$ is defined to be
+\[ \norm{A}_F = \sqrt{\sum_{i, j}\left|A_{i, j}\right|^2}. \]
+The Frobenius norm is related to the trace with this relation
+\[ \norm{A}_F^2 = Tr(AA^{\top}) \]
+This norm is commonly used as an error metric between the design matrix and the predictions matrix of a learning algorithm. 
+\end{entrysection}
+
+\begin{entrysection} [Projection Matrix]
+Suppose that we want to project a vector $v \in V$ to a subspace $U \subset V$. If we had an orthonormal basis $f_1,\ldots,f_r$ of $U$, then the projection $v_U$ of a vector $v \in V$ is
+\[ v_U = \inp{v, f_1} f_1 + \ldots + \inp{v, f_r} f_r. \]
+If we were to use $f_1, \ldots, f_r$ as our new basis, then the projection matrix is defined to be
+\[ P = \begin{bmatrix}f_1^{\top} \\ \vdots \\ f_r^{\top}  \end{bmatrix}, \]
+and as such
+\[ Pv = \begin{bmatrix}f_1^{\top} \\ \vdots \\ f_r^{\top}  \end{bmatrix} v = \begin{bmatrix} \inp{v, f_1} \\ \vdots \\ \inp{v, f_r}  \end{bmatrix}. \]
+Note that the projection matrix is semi-unitary, and as such $PP^{\top} = I$.
+\end{entrysection}
+
+\begin{entrysection} [The Problem]
+Suppose that we have a normalized design matrix $X$, as in the previous entry.
+And suppose that $n$ is the number of features. Thus each data point lives in $\R^n$.
+We want to find a subspace $U$ of dimension $r$ to which we project our data points such that the reconstruction error is minimized.
+If $Z$ is the reconstructed design matrix from the projection, then we want to minimize the reconstruction error $E$ where 
+\[ E = \norm{X - Z}_F^2  \] 
+In other words, we want to find the best subspace that if we projected our data to, we won't lose much information, and as a consequence we compress the data.
+\end{entrysection}
+
+\begin{entrysection} [The Solution]
+Let $P$ be the projection matrix to the subspace $U$, and let \[Y = XP^{\top}\] be the projected design matrix. 
+Then
+\[ Z = XP^{\top}P\] 
+We can write the minimization problem as follows
+\[ P = \text{arg min}_P \: \norm{X - XP^{\top}X}_F^2. \]
+Thus
+\begin{align*}
+P &= \text{arg min}_P \: Tr( (X - XP^{\top}X)^{\top} (X - XP^{\top}X) ) \\
+&= \text{arg min}_P \: Tr( X^{\top}X - X^{\top}XP^{\top}P - P^{\top}PX^{\top}X + P^{\top}PX^{\top}XP^{\top}P ) \\  
+&= \text{arg min}_P \: Tr( X^{\top}X ) - Tr (X^{\top}XP^{\top}P) - Tr(P^{\top}PX^{\top}X) + Tr(P^{\top}PX^{\top}XP^{\top}P ).
+\end{align*}
+Since $X^{\top}X$ is not a function of $P$ we get
+\begin{align*}
+P &= \text{arg min}_P \: - Tr (X^{\top}XP^{\top}P) - Tr(P^{\top}PX^{\top}X) + Tr(P^{\top}PX^{\top}XP^{\top}P ).
+\end{align*}
+From the properties of the trace we have $Tr (X^{\top}XP^{\top}P) = Tr(P^{\top}PX^{\top}X)$ since they are each other's transpose. We also get
+\[ Tr(P^{\top}PX^{\top}XP^{\top}P) = Tr(PP^{\top}PX^{\top}XP^{\top}) = Tr(PX^{\top}XP^{\top}), \]
+because $PP^{\top} = I$.
+Therefore
+\begin{align*}
+P &= \text{arg min}_P \: - 2 Tr(P^{\top}PX^{\top}X) + Tr(PX^{\top}XP^{\top}) ) \\
+&= \text{arg min}_P \: - Tr(PX^{\top}XP^{\top}) .
+\end{align*}
+Which is the same problem as
+\[ P = \text{arg max}_P \: Tr(PX^{\top}XP^{\top}).
+\]
+
+
+
+\end{entrysection}
+
+\end{entry}
